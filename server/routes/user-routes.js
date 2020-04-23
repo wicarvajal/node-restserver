@@ -2,10 +2,11 @@ const express = require('express');
 const app = express();
 const UserModel = require('../models/user')
 const _ = require('underscore');
+const {verifyToken, verifyAdminRole} = require('../middlewares/auth');
 
 const bcrypt = require('bcrypt');
 
-app.get('/user', function (req, res) {
+app.get('/user', verifyToken, (req, res) => {
 
   let from = Number(req.query.from) || 0;
   let to = Number(req.query.to) || 0;
@@ -32,7 +33,7 @@ app.get('/user', function (req, res) {
   })
 });
 
-app.post('/user', function (req, res) {
+app.post('/user', [verifyToken, verifyAdminRole], function (req, res) {
 
   let body = req.body;
 
@@ -59,7 +60,7 @@ app.post('/user', function (req, res) {
 
 });
 
-app.put('/user/:id', function (req, res) {
+app.put('/user/:id', verifyToken, function (req, res) {
   let id = req.params.id;
   let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'state']);
 
@@ -78,7 +79,7 @@ app.put('/user/:id', function (req, res) {
   });
 });
 
-app.delete('/user/:id', function (req, res) {
+app.delete('/user/:id', verifyToken, function (req, res) {
   let id = req.params.id;
 
   UserModel.findByIdAndUpdate(id, {state: false}, {new: true}, (err, userDeleted) => {
