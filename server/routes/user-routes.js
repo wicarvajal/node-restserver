@@ -62,7 +62,7 @@ app.post('/user', [verifyToken, verifyAdminRole], function (req, res) {
 
 app.put('/user/:id', verifyToken, function (req, res) {
   let id = req.params.id;
-  let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'state']);
+  let body = _.pick(req.body, ['nombre', 'email', 'role']);
 
   UserModel.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, userDB) => {
     if (err) {
