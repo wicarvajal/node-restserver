@@ -31,7 +31,23 @@ let verifyAdminRole = (req, res, next) => {
   }
 }
 
+let verifyImgToken = (req, res, next) => {
+  let token = req.query.token;
+
+  jwt.verify(token, process.env.TOKEN_SEED, (err, decoded) => {
+    if (err) {
+      return res.status(400).json({
+        ok: false,
+        err
+      })
+    }
+    req.user = decoded.user;
+    next();
+  });
+}
+
 module.exports = {
   verifyToken,
-  verifyAdminRole
+  verifyAdminRole,
+  verifyImgToken
 };

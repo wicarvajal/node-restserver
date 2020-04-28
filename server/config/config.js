@@ -14,7 +14,7 @@ let urlDB;
 // ============================
 //  token
 // ============================
-process.env.TOKEN_EXP = 60 * 60 * 24 * 30;
+process.env.TOKEN_EXP = 1000 * 60 * 60 * 24 * 30;
 process.env.TOKEN_SEED = 'secret';
 
 process.env.CLIENT_ID = process.env.CLIENT_ID || '305003947445-1no8iqlggfhpcgc9sleh7320ghccqgii.apps.googleusercontent.com';

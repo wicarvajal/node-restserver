@@ -10,6 +10,7 @@ let categoySchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
+    // referencia al nombre del esquema en el module.exports
   }
 })
 

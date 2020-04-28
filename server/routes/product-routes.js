@@ -10,8 +10,8 @@ app.get('/product', verifyToken, (req, res) => {
   let to = Number(req.query.to) || 0;
 
   ProductSchema.find({})
-  .populate('usuario', 'nombre email')
-  .populate('categoria', 'description')
+    .populate('usuario', 'nombre email')
+    .populate('categoria', 'description')
     .skip(from)
     .limit(to)
     .exec((err, productArr) => {
@@ -22,13 +22,10 @@ app.get('/product', verifyToken, (req, res) => {
         })
       }
 
-      UserModel.countDocuments((err, count) => {
-        res.json({
-          ok: true,
-          productArr,
-          count
-        });
-      })
+      res.json({
+        ok: true,
+        productArr
+      });
 
     })
 });
@@ -38,7 +35,7 @@ app.get('/product/buscar/:termino', verifyToken, (req, res) => {
   let search = req.params.termino;
   let regex = new RegExp(search, 'i')
 
-  ProductSchema.find({ nombre: regex})
+  ProductSchema.find({ nombre: regex })
     .populate('usuario', 'nombre email')
     .populate('categoria', 'description')
     .exec((err, productArr) => {
@@ -90,7 +87,7 @@ app.post('/product', [verifyToken, verifyAdminRole], function (req, res) {
     descripcion: body.description,
     disponible: body.available,
     categoria: body.category,
-    usuario: body.user._id
+    usuario: req.user._id
   })
 
   product.save((err, productDB) => {
@@ -133,7 +130,7 @@ app.put('/product/:id', verifyToken, function (req, res) {
     productDB.descripcion = body.description;
     productDB.disponible = body.available
     productDB.categoria = body.category
-    productDB.usuario = body.user._id
+    productDB.usuario = req.user._id
 
     productDB.save((err, productDB) => {
       if (err) {

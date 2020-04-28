@@ -6,7 +6,7 @@ const _ = require('underscore');
 
 app.get('/categorias', verifyToken, (req, res) => {
   CategorySchema.find()
-  .populate('user')
+  .populate('user', 'nombre email')
   .exec((err, arrCategory) => {
     if (err) {
       return res.status(400).json({
